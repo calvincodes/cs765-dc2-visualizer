@@ -1,0 +1,7 @@
+Here are some synthetic product review datasets. All of them were generated using random distributions with a specific set of properties. They vary by size, so you can start with the one that your implementation can handle.
+
+Variants:
+- small (10 products, ~50 reviews)
+- medium (50 products, ~600 reviews)
+- large (1k products, ~13k reviews)
+- extra large (10k products, 400k reviews)
