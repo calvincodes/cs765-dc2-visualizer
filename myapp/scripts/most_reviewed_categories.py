@@ -21,12 +21,14 @@ from bokeh.application import Application
 
 from bokeh.plotting import figure, curdoc
 
-def getKColors(k):
-    k_color_list = []
-    for i in range(k):
-        k_color_list.append(Category20_20[i % 20])
+from .helper import getKColors
 
-    return k_color_list
+# def getKColors(k):
+#     k_color_list = []
+#     for i in range(k):
+#         k_color_list.append(Category20_20[i % 20])
+#
+#     return k_color_list
 
 def most_reviewed_categories_tab(dataset, metadata):
 
