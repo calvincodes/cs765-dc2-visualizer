@@ -23,19 +23,7 @@ from bokeh.plotting import figure, curdoc
 
 from .helper import getKColors
 
-# def getKColors(k):
-#     k_color_list = []
-#     for i in range(k):
-#         k_color_list.append(Category20_20[i % 20])
-#
-#     return k_color_list
-
 def most_reviewed_categories_tab(dataset, metadata):
-
-    # dataset = pd.read_csv('../dataset/CDs_and_Vinyl_5.csv', skipinitialspace=True)
-    # metadata = pd.read_csv('../dataset/CDs_And_Vinyl_meta_5.csv', skipinitialspace=True)
-    # dataset = pd.read_csv(join(dirname(__file__), 'dataset', 'CDs_and_Vinyl_5.csv'), skipinitialspace=True)
-    # metadata = pd.read_csv(join(dirname(__file__), 'dataset', 'CDs_and_Vinyl_5.csv'), skipinitialspace=True)
 
     combined_data = dataset.set_index('asin').join(metadata.set_index('Product ID'))
 
@@ -102,7 +90,5 @@ def most_reviewed_categories_tab(dataset, metadata):
     top_k_select_slider.on_change('value', update)
 
     layout = column(top_k_select_slider, p)
-    # curdoc().add_root(layout)
-
     tab = Panel(child=layout, title='Most Reviewed Categories')
     return tab
