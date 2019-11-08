@@ -47,7 +47,7 @@ from bokeh.application import Application
 
 from bokeh.plotting import figure, curdoc
 
-from .category_wise_reviews import category_wise_reviews_tab
+from scripts.category_wise_reviews import category_wise_reviews_tab
 
 # def category_wise_reviews_tab(cd_and_vinyl, cd_and_vinyl_meta):
 
