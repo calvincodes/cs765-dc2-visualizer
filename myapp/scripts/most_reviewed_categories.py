@@ -33,7 +33,7 @@ def most_reviewed_categories_tab(dataset, metadata):
     category_count = category_to_mean_and_total_reviews.shape[0]
     category_to_mean_and_total_reviews = category_to_mean_and_total_reviews.sort_values('total', ascending=False)
 
-    default = 10
+    default = 10 if category_count > 10 else category_count
     plot_data = category_to_mean_and_total_reviews.head(default)
     source = ColumnDataSource(
         data=dict(
@@ -70,7 +70,7 @@ def most_reviewed_categories_tab(dataset, metadata):
                                  step = 5, value = default,
                                  title = 'Top k Categories')
 
-    def update(attr, old, new):
+    def update_plot(attr, old, new):
 
         new_count = top_k_select_slider.value
         new_plot_data = category_to_mean_and_total_reviews.head(new_count)
@@ -87,7 +87,7 @@ def most_reviewed_categories_tab(dataset, metadata):
 
         ds.data = new_data
 
-    top_k_select_slider.on_change('value', update)
+    top_k_select_slider.on_change('value', update_plot)
 
     layout = column(top_k_select_slider, p)
     tab = Panel(child=layout, title='Most Reviewed Categories')

@@ -10,7 +10,7 @@ from bokeh.io import show, output_notebook, push_notebook
 from bokeh.plotting import figure
 
 from bokeh.models import CategoricalColorMapper, HoverTool, ColumnDataSource, Panel
-from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs
+from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs, FileInput
 
 from bokeh.layouts import column, row, WidgetBox
 from bokeh.palettes import Category20_16
@@ -49,7 +49,7 @@ def category_wise_reviews_tab(cd_and_vinyl, cd_and_vinyl_meta):
     r = p.vbar(source=source, x='category', top='average', color='color', width=0.1)
     ds = r.data_source
 
-    def update(attr, old, new):
+    def update_plot(attr, old, new):
 
         categories_to_plot = [category_selection.labels[i] for i in category_selection.active]
 
@@ -66,7 +66,7 @@ def category_wise_reviews_tab(cd_and_vinyl, cd_and_vinyl_meta):
 
         ds.data = new_data
 
-    category_selection.on_change('active', update)
+    category_selection.on_change('active', update_plot)
     controls = WidgetBox(category_selection)
 
     layout = row(controls, p)
