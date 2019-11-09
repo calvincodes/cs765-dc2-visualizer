@@ -1,3 +1,5 @@
+https://cs765-dc2-visualizer.herokuapp.com/myapp
+
 TODO
 1. Display msg upon successful load of data
 2. Add some html to tell how to navigate
