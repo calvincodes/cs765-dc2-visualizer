@@ -74,7 +74,7 @@ def product_reviews_over_time_tab(dataset, metadata):
                       mode='vline')
 
     # Total Reviews Figure
-    p1 = figure(x_range=plot_data.time.tolist(), plot_width=1200, plot_height=300)
+    p1 = figure(x_range=plot_data.time.tolist(), plot_width=900, plot_height=300)
     r1 = p1.line(source=source, x='time_stamp', y='total', line_width=2)
 
     p1.add_tools(hover)
@@ -93,7 +93,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     ds1 = r1.data_source
 
     # Average Review Figure
-    p2 = figure(x_range=plot_data.time.tolist(), plot_width=1200, plot_height=300)
+    p2 = figure(x_range=plot_data.time.tolist(), plot_width=900, plot_height=300)
     r2 = p2.line(source=source, x='time_stamp', y='average', line_width=2)
 
     p2.add_tools(hover)
@@ -143,10 +143,41 @@ def product_reviews_over_time_tab(dataset, metadata):
         new_plot_data = plot_data
 
         if radio_button_group.active == 0:
+            try:
+                year_wise_reviews
+            except NameError:
+                year_wise_reviews = None
+
+            if year_wise_reviews is None:
+                year_wise_reviews = filtered_data.groupby('reviewYear')['overall'].agg(['mean', 'count']).reset_index()
+                year_wise_reviews.columns = ['time', 'average', 'total']
+
             new_plot_data = year_wise_reviews
+
         if radio_button_group.active == 1:
+
+            try:
+                month_wise_reviews
+            except NameError:
+                month_wise_reviews = None
+
+            if month_wise_reviews is None:
+                month_wise_reviews = filtered_data.groupby('reviewMonth')['overall'].agg(
+                    ['mean', 'count']).reset_index()
+                month_wise_reviews.columns = ['time', 'average', 'total']
             new_plot_data = month_wise_reviews
+
         if radio_button_group.active == 2:
+
+            try:
+                date_wise_reviews
+            except NameError:
+                date_wise_reviews = None
+
+            if date_wise_reviews is None:
+                date_wise_reviews = filtered_data.groupby('dtReviewTime')['overall'].agg(
+                    ['mean', 'count']).reset_index()
+                date_wise_reviews.columns = ['time', 'average', 'total']
             new_plot_data = date_wise_reviews
 
         new_data = get_updated_plot_data_dict(new_plot_data)
@@ -160,7 +191,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     radio_button_group.on_change('active', update_plot)
 
     def generate_div_text(product_attributes):
-        return """<table style='font-family: arial, sans-serif; border-collapse: collapse; width: 100%;'> 
+        return """<table width="900" style='font-family: arial, sans-serif; border-collapse: collapse; width: 100%;'> 
                                         <tr> 
                                             <th style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center;'>Attribute</th> 
                                             <th style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center;'>Value</th> </tr>
@@ -221,7 +252,7 @@ def product_reviews_over_time_tab(dataset, metadata):
                                         
                                         </table>"""
 
-    product_details_div = Div(text=generate_div_text(product_details), width=1200, height=300)
+    product_details_div = Div(text=generate_div_text(product_details), width=900, height=300)
 
     def update_selection():
 
