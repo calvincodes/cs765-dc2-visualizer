@@ -49,12 +49,15 @@ from bokeh.plotting import figure, curdoc
 
 from scripts.category_wise_reviews import category_wise_reviews_tab
 from scripts.most_reviewed_categories import most_reviewed_categories_tab
+from scripts.product_reviews_over_time import product_reviews_over_time_tab
 
 import base64
 import io
 
 dataset = pd.read_csv('myapp/dataset/CDs_and_Vinyl_5.csv', skipinitialspace=True)
+dataset.columns = ['asin', 'reviewerID', 'overall', 'unixReviewTime']
 metadata = pd.read_csv('myapp/dataset/CDs_And_Vinyl_meta_5.csv', skipinitialspace=True)
+metadata.columns = ['Product ID', 'Description', 'price', 'Category']
 
 def upload_dataset(attr, old, new):
     global dataset
@@ -76,7 +79,8 @@ def refresh_with_new_data():
     global tab0, home_layout
     updated_tab1 = category_wise_reviews_tab(dataset, metadata)
     updated_tab2 = most_reviewed_categories_tab(dataset, metadata)
-    updated_tabs = Tabs(tabs=[tab0, updated_tab1, updated_tab2])
+    updated_tab3 = product_reviews_over_time_tab(dataset, metadata)
+    updated_tabs = Tabs(tabs=[tab0, updated_tab1, updated_tab2, updated_tab3])
     home_layout.children[0] = row(updated_tabs)
 
 upload_button = Button(label="Upload Data", button_type="primary")
@@ -110,9 +114,10 @@ tab0 = Panel(child=tab0_layout, title='Datasource Selector')
 # Create each of the tabs
 tab1 = category_wise_reviews_tab(dataset, metadata)
 tab2 = most_reviewed_categories_tab(dataset, metadata)
+tab3 = product_reviews_over_time_tab(dataset, metadata)
 
 # Put all the tabs into one application
-tabs = Tabs(tabs = [tab0, tab1, tab2])
+tabs = Tabs(tabs = [tab0, tab1, tab2, tab3])
 home_layout = row(tabs)
 
 # Put the tabs in the current document for display
