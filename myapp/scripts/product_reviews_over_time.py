@@ -3,11 +3,12 @@ from os.path import dirname, join
 import pandas as pd
 import numpy as np
 import math
+import datetime as dt
 
 from bokeh.io import show, output_notebook, push_notebook
 from bokeh.plotting import figure
 
-from bokeh.models import CategoricalColorMapper, HoverTool, ColumnDataSource, Panel, NumeralTickFormatter
+from bokeh.models import CategoricalColorMapper, HoverTool, ColumnDataSource, Panel, NumeralTickFormatter, RangeTool, Range1d
 from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs, RadioButtonGroup, Button, TextInput, Div, PreText
 
 from bokeh.layouts import column, row, WidgetBox
@@ -65,12 +66,14 @@ def product_reviews_over_time_tab(dataset, metadata):
 
     # Default plot is Year Wise Reviews
     plot_data = year_wise_reviews
+    plot_data['dt_time'] = pd.to_datetime(plot_data['time'], format='%Y')
     source = ColumnDataSource(
         data=dict(
-            time_stamp=list(map(str, plot_data['time'])),
-            total=plot_data.total.tolist(),
-            average=plot_data.average.tolist(),
-            color=getKColors(len(plot_data))))
+            time_stamp = list(map(str, plot_data['time'])),
+            dt_time = plot_data.dt_time.tolist(),
+            total = plot_data.total.tolist(),
+            average = plot_data.average.tolist(),
+            color = getKColors(len(plot_data))))
 
     # Adding hover tool
     hover = HoverTool(tooltips=[('Time', '@time_stamp'),
@@ -79,9 +82,28 @@ def product_reviews_over_time_tab(dataset, metadata):
                       mode='vline')
 
     # Total Reviews Figure
-    p1 = figure(x_range=plot_data.time.tolist(), plot_width=1200, plot_height=300)
-    r1_l = p1.line(source=source, x='time_stamp', y='total', line_width=2)
-    r1_c = p1.circle(source=source, x='time_stamp', y='total', size=20, color="navy", alpha=0.5)
+    dates_list = [dt.datetime.strptime(date, '%Y').date() for date in plot_data.time.tolist()]
+    p1 = figure(x_range=(dates_list[1], dates_list[4]), plot_width=1200, plot_height=300,
+                tools="xpan", toolbar_location=None,
+                x_axis_type="datetime")
+    r1_l = p1.line(source=source, x='dt_time', y='total', line_width=2)
+    r1_c = p1.circle(source=source, x='dt_time', y='total', size=20, color="navy", alpha=0.5)
+
+    select = figure(title="Drag the middle and edges of the selection box to change the range above",
+                    plot_height=200, plot_width=1200, y_range=p1.y_range,
+                    x_axis_type="datetime", y_axis_type=None,
+                    tools="", toolbar_location=None, background_fill_color="#efefef")
+
+    custom_range = Range1d(start=float(plot_data.time.tolist()[0]), end=float(plot_data.time.tolist()[-1]))
+    # range_tool = RangeTool(x_range=custom_range)
+    range_tool = RangeTool(x_range=p1.x_range)
+    range_tool.overlay.fill_color = "navy"
+    range_tool.overlay.fill_alpha = 0.2
+
+    select.line(source=source, x='dt_time', y='total')
+    select.ygrid.grid_line_color = None
+    select.add_tools(range_tool)
+    select.toolbar.active_multi = range_tool
 
     p1.add_tools(hover)
 
@@ -362,6 +384,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     sample_product_ids = Div(text=pre_text_data, width=600, height=100)
 
     # layout = column(search_input, search_button, product_details_div, radio_button_group, p1, p2)
-    layout = column(row(column(search_input, search_button, sample_product_ids), product_details_div), radio_button_group, p1, p2)
+    layout = column(row(column(search_input, search_button, sample_product_ids), product_details_div),
+                    select, radio_button_group, p1, p2)
     tab = Panel(child=layout, title='Product Reviews Over Time')
     return tab
