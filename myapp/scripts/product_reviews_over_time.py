@@ -39,6 +39,16 @@ def product_reviews_over_time_tab(dataset, metadata):
     selected_product = combined_data.asin.value_counts().head(1).index[0]
     filtered_data = get_product_data(selected_product)
 
+    product_details = dict()
+    product_details['asin'] = filtered_data.head(1).asin.values[0]
+    product_details['description'] = filtered_data.head(1).Description.values[0]
+    product_details['category'] = filtered_data.head(1).Category.values[0]
+    review_avg = filtered_data.groupby('Category')['overall'].agg(['mean', 'count']).reset_index()
+    product_details['total_reviews'] = review_avg['count'].values[0]
+    product_details['review_avg'] = review_avg['mean'].values[0]
+    price_avg = filtered_data.groupby('Category')['price'].agg(['mean', 'count']).reset_index()
+    product_details['price_avg'] = price_avg['mean'].values[0]
+
     year_wise_reviews = filtered_data.groupby('reviewYear')['overall'].agg(['mean', 'count']).reset_index()
     year_wise_reviews.columns = ['time', 'average', 'total']
 
@@ -149,11 +159,73 @@ def product_reviews_over_time_tab(dataset, metadata):
 
     radio_button_group.on_change('active', update_plot)
 
-    product_details_div = Div(text="""<b>This is a sample div.</b>""", width=1200, height=300)
+    def generate_div_text(product_attributes):
+        return """<table style='font-family: arial, sans-serif; border-collapse: collapse; width: 100%;'> 
+                                        <tr> 
+                                            <th style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center;'>Attribute</th> 
+                                            <th style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center;'>Value</th> </tr>
+                                        
+                                        <tr> 
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
+                                                Product ID
+                                            </td>
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
+                                                """ + product_attributes['asin'] + """
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr> 
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center;'>
+                                                Description
+                                            </td>
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center'>
+                                                """ + product_attributes['description'] + """
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr> 
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
+                                                Category
+                                            </td>
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
+                                                """ + product_attributes['category'] + """
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr> 
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center;'>
+                                                Total Reviews
+                                            </td>
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center'>
+                                                """ + str(product_attributes['total_reviews']) + """
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr> 
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
+                                                Average Review
+                                            </td>
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
+                                                """ + str(product_attributes['review_avg']) + """
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr> 
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center;'>
+                                                Average Price
+                                            </td>
+                                            <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center'>
+                                                """ + str(product_attributes['price_avg']) + """
+                                            </td>
+                                        </tr>
+                                        
+                                        </table>"""
+
+    product_details_div = Div(text=generate_div_text(product_details), width=1200, height=300)
 
     def update_selection():
 
-        global year_wise_reviews, month_wise_reviews, date_wise_reviews
+        global year_wise_reviews, month_wise_reviews, date_wise_reviews, product_details
         searched_data = get_product_data(search_input.value)
         new_data = dict()
 
@@ -175,6 +247,19 @@ def product_reviews_over_time_tab(dataset, metadata):
             product_details_div.text = """<img alt="Sorry! No product found." src="/myapp/static/images/no_product_found.jpg">"""
 
         else:
+
+            product_details = dict()
+            product_details['asin'] = searched_data.head(1).asin.values[0]
+            product_details['description'] = searched_data.head(1).Description.values[0]
+            product_details['category'] = searched_data.head(1).Category.values[0]
+            updated_review_avg = searched_data.groupby('Category')['overall'].agg(['mean', 'count']).reset_index()
+            product_details['total_reviews'] = updated_review_avg['count'].values[0]
+            product_details['review_avg'] = updated_review_avg['mean'].values[0]
+            updated_price_avg = searched_data.groupby('Category')['price'].agg(['mean', 'count']).reset_index()
+            product_details['price_avg'] = updated_price_avg['mean'].values[0]
+
+            product_details_div.text = generate_div_text(product_details)
+
             year_wise_reviews = searched_data.groupby('reviewYear')['overall'].agg(['mean', 'count']).reset_index()
             year_wise_reviews.columns = ['time', 'average', 'total']
 
