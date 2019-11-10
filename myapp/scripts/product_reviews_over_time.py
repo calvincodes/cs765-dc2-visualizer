@@ -132,9 +132,10 @@ def product_reviews_over_time_tab(dataset, metadata):
         #TODO: Implement this
         return
 
-    select_product = Select(title="Product Id:", value=selected_product, options=combined_data['asin'].unique().tolist())
-    select_product.on_change('value', update_selection)
+    # select_product = Select(title="Product Id:", value=selected_product, options=combined_data['asin'].unique().tolist())
+    # select_product.on_change('value', update_selection)
 
-    layout = column(select_product, radio_button_group, p1, p2)
+    # layout = column(select_product, radio_button_group, p1, p2)
+    layout = column(radio_button_group, p1, p2)
     tab = Panel(child=layout, title='Product Reviews Over Time')
     return tab
