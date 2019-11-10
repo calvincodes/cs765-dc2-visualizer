@@ -149,7 +149,7 @@ def product_reviews_over_time_tab(dataset, metadata):
 
     radio_button_group.on_change('active', update_plot)
 
-    product_details_div = Div(text="""<b>This is a sample div.</b>""", width=200, height=100)
+    product_details_div = Div(text="""<b>This is a sample div.</b>""", width=1200, height=300)
 
     def update_selection():
 
@@ -172,7 +172,7 @@ def product_reviews_over_time_tab(dataset, metadata):
             p1.x_range.factors = new_data['x_range']
             p2.x_range.factors = new_data['x_range']
 
-            product_details_div.text = """<b>Please get updated.</b>"""
+            product_details_div.text = """<img alt="Sorry! No product found." src="/myapp/static/images/no_product_found.jpg">"""
 
         else:
             year_wise_reviews = searched_data.groupby('reviewYear')['overall'].agg(['mean', 'count']).reset_index()
@@ -203,6 +203,6 @@ def product_reviews_over_time_tab(dataset, metadata):
     search_button = Button(label="Search", button_type="success")
     search_button.on_click(update_selection)
 
-    layout = column(search_input, search_button, radio_button_group, product_details_div, p1, p2)
+    layout = column(search_input, search_button, product_details_div, radio_button_group, p1, p2)
     tab = Panel(child=layout, title='Product Reviews Over Time')
     return tab
