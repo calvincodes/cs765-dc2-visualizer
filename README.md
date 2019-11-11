@@ -5,6 +5,7 @@ TODO
 2. Add some html to tell how to navigate
 3. Search using text and provide results accordingly
 5. Provide some sample analysis of data after upload. This may include mode of product, category, total products, etc. combined_data.asin.value_counts()
+6. Mention in slider tab that it is static
 
 `bokeh serve --show myapp/`
 
