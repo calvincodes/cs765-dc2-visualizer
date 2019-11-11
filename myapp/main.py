@@ -17,7 +17,7 @@ from bokeh.io import show, output_notebook, push_notebook
 from bokeh.plotting import figure
 
 from bokeh.models import CategoricalColorMapper, HoverTool, ColumnDataSource, Panel
-from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs, FileInput, Button, DataTable, TableColumn
+from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs, FileInput, Button, DataTable, TableColumn, PreText
 
 from bokeh.layouts import column, row, WidgetBox
 from bokeh.palettes import Category20_20
@@ -55,6 +55,9 @@ from scripts.product_reviews_over_time_with_slider import product_reviews_over_t
 import base64
 import io
 
+heading_div = Div(text="""<br><h1 style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0.5rem; font-family: &quot;Nunito Sans&quot;, -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-weight: 600; color: rgb(26, 26, 26); font-size: 2rem; text-transform: uppercase; letter-spacing: 3px;">DESIGN CHALLENGE 2</h1><pre>Analyze Product Trends. Use sample data or upload custom files.</pre><hr>""", width=1000, height=120, style={'text-align':'center'})
+footer_div = Div(text="""<br><p style="font-style: italic; font-color:black;"><a href="https://github.com/calvincodes/cs765-dc2-visualizer">Github Link</a></p>""", width=1000, height=20, style={'text-align':'center'})
+
 dataset = pd.read_csv('myapp/dataset/CDs_and_Vinyl_5.csv', skipinitialspace=True)
 dataset.columns = ['asin', 'reviewerID', 'overall', 'unixReviewTime']
 metadata = pd.read_csv('myapp/dataset/CDs_And_Vinyl_meta_5.csv', skipinitialspace=True)
@@ -65,6 +68,7 @@ def upload_dataset(attr, old, new):
     dataset = pd.read_csv(io.BytesIO(base64.b64decode(dataset_file_input.value)), skipinitialspace=True)
     dataset.columns = ['asin', 'reviewerID', 'overall', 'unixReviewTime']
 
+pre_dataset = PreText(text="""Reviews Dataset CSV File""",width=200, height=10)
 dataset_file_input = FileInput(accept=".csv")
 dataset_file_input.on_change('value', upload_dataset)
 
@@ -73,6 +77,7 @@ def upload_metadata(attr, old, new):
     metadata = pd.read_csv(io.BytesIO(base64.b64decode(metadata_file_input.value)), skipinitialspace=True)
     metadata.columns = ['Product ID', 'Description', 'price', 'Category']
 
+pre_metadata = PreText(text="""Metadata CSV File""",width=150, height=10)
 metadata_file_input = FileInput(accept=".csv")
 metadata_file_input.on_change('value', upload_metadata)
 
@@ -102,7 +107,7 @@ analytics_columns = [
     TableColumn(field="attr", title="Attributes"),
     TableColumn(field="vals", title="Values"),
 ]
-analytics_table = DataTable(source=analytics_source, columns=analytics_columns, width=1000, height=280)
+analytics_table = DataTable(source=analytics_source, columns=analytics_columns, width=1000, height=150)
 
 def refresh_with_new_data(dataset_enum):
     global tab0, tab2, home_layout, current_dataset
@@ -152,11 +157,14 @@ def load_music_and_instruments_data():
 music_and_instruments_data_button = Button(label="Load Music & Instruments Data", button_type="success", width=500)
 music_and_instruments_data_button.on_click(load_music_and_instruments_data)
 
-tab0_layout = column(
-    dataset_file_input, metadata_file_input, upload_button,
+tab0_layout = column(heading_div,
+    row(pre_dataset, dataset_file_input),
+    row(pre_metadata, metadata_file_input),
+    upload_button,
     row(cd_and_vinyl_data_button, music_and_instruments_data_button),
     current_dataset_div,
-    analytics_table)
+    analytics_table,
+    footer_div)
 tab0 = Panel(child=tab0_layout, title='Datasource Selector')
 
 # Create each of the tabs
