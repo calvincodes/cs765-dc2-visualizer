@@ -77,12 +77,11 @@ metadata_file_input = FileInput(accept=".csv")
 metadata_file_input.on_change('value', upload_metadata)
 
 def refresh_with_new_data():
-    global tab0, home_layout
+    global tab0, tab2, home_layout
     updated_tab1 = product_reviews_over_time_tab(dataset, metadata)
-    updated_tab2 = product_reviews_over_time_with_slider_tab(dataset, metadata)
     updated_tab3 = most_reviewed_categories_tab(dataset, metadata)
     updated_tab4 = category_wise_reviews_tab(dataset, metadata)
-    updated_tabs = Tabs(tabs=[tab0, updated_tab1, updated_tab2, updated_tab3, updated_tab4])
+    updated_tabs = Tabs(tabs=[tab0, updated_tab1, tab2, updated_tab3, updated_tab4])
     home_layout.children[0] = row(updated_tabs)
 
 upload_button = Button(label="Upload Data", button_type="primary")
