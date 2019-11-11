@@ -124,7 +124,7 @@ def product_reviews_over_time_with_slider_tab(dataset, metadata):
     ds1_c = r1_c.data_source
     ds_sel = s1.data_source
 
-    # Average Review Figure
+    # Average Rating Figure
     p2 = figure(x_range=p1.x_range, plot_width=1200, plot_height=250,
                 tools="xpan", toolbar_location=None,
                 x_axis_type="datetime"
@@ -140,7 +140,7 @@ def product_reviews_over_time_with_slider_tab(dataset, metadata):
     p2.xaxis.major_label_text_font_size = "10pt"
     p2.xaxis.axis_label_text_font_size = "15pt"
 
-    p2.yaxis.axis_label = "Average Review"
+    p2.yaxis.axis_label = "Average Rating"
     p2.yaxis.formatter = NumeralTickFormatter(format="0")
     p2.yaxis.major_label_text_font_size = "10pt"
     p2.yaxis.axis_label_text_font_size = "15pt"
@@ -285,7 +285,7 @@ def product_reviews_over_time_with_slider_tab(dataset, metadata):
 
                                         <tr> 
                                             <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
-                                                Average Review
+                                                Average Rating
                                             </td>
                                             <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
                                                 """ + str(product_attributes['review_avg']) + """

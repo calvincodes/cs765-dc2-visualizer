@@ -100,7 +100,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     ds1_l = r1_l.data_source
     ds1_c = r1_c.data_source
 
-    # Average Review Figure
+    # Average Rating Figure
     p2 = figure(x_range=plot_data.time.tolist(), plot_width=1200, plot_height=300)
     r2_l = p2.line(source=source, x='time_stamp', y='average', line_width=2)
     r2_c = p2.circle(source=source, x='time_stamp', y='average', size=15, color="red", alpha=0.5)
@@ -113,7 +113,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     p2.xaxis.major_label_text_font_size = "10pt"
     p2.xaxis.axis_label_text_font_size = "15pt"
 
-    p2.yaxis.axis_label = "Average Review"
+    p2.yaxis.axis_label = "Average Rating"
     p2.yaxis.formatter = NumeralTickFormatter(format="0")
     p2.yaxis.major_label_text_font_size = "10pt"
     p2.yaxis.axis_label_text_font_size = "15pt"
@@ -250,7 +250,7 @@ def product_reviews_over_time_tab(dataset, metadata):
 
                                         <tr> 
                                             <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
-                                                Average Review
+                                                Average Rating
                                             </td>
                                             <td style='border: 1px solid #dddddd; text-align: left; padding: 8px; align: center; background-color: #dddddd'>
                                                 """ + str(product_attributes['review_avg']) + """

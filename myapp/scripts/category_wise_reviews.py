@@ -70,5 +70,5 @@ def category_wise_reviews_tab(cd_and_vinyl, cd_and_vinyl_meta):
     controls = WidgetBox(category_selection)
 
     layout = row(controls, p)
-    tab = Panel(child=layout, title='Category Wise Reviews')
+    tab = Panel(child=layout, title='Basic Vis (Proof of Concept)')
     return tab
