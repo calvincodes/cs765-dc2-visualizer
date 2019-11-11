@@ -50,6 +50,7 @@ from bokeh.plotting import figure, curdoc
 from scripts.category_wise_reviews import category_wise_reviews_tab
 from scripts.most_reviewed_categories import most_reviewed_categories_tab
 from scripts.product_reviews_over_time import product_reviews_over_time_tab
+from scripts.product_reviews_over_time_with_slider import product_reviews_over_time_with_slider_tab
 
 import base64
 import io
@@ -77,10 +78,11 @@ metadata_file_input.on_change('value', upload_metadata)
 
 def refresh_with_new_data():
     global tab0, home_layout
-    updated_tab1 = most_reviewed_categories_tab(dataset, metadata)
-    updated_tab2 = product_reviews_over_time_tab(dataset, metadata)
-    updated_tab3 = category_wise_reviews_tab(dataset, metadata)
-    updated_tabs = Tabs(tabs=[tab0, updated_tab1, updated_tab2, updated_tab3])
+    updated_tab1 = product_reviews_over_time_tab(dataset, metadata)
+    updated_tab2 = product_reviews_over_time_with_slider_tab(dataset, metadata)
+    updated_tab3 = most_reviewed_categories_tab(dataset, metadata)
+    updated_tab4 = category_wise_reviews_tab(dataset, metadata)
+    updated_tabs = Tabs(tabs=[tab0, updated_tab1, updated_tab2, updated_tab3, updated_tab4])
     home_layout.children[0] = row(updated_tabs)
 
 upload_button = Button(label="Upload Data", button_type="primary")
@@ -112,12 +114,13 @@ tab0_layout = column(
 tab0 = Panel(child=tab0_layout, title='Datasource Selector')
 
 # Create each of the tabs
-tab1 = most_reviewed_categories_tab(dataset, metadata)
-tab2 = product_reviews_over_time_tab(dataset, metadata)
-tab3 = category_wise_reviews_tab(dataset, metadata)
+tab1 = product_reviews_over_time_tab(dataset, metadata)
+tab2 = product_reviews_over_time_with_slider_tab(dataset, metadata)
+tab3 = most_reviewed_categories_tab(dataset, metadata)
+tab4 = category_wise_reviews_tab(dataset, metadata)
 
 # Put all the tabs into one application
-tabs = Tabs(tabs = [tab0, tab1, tab2, tab3])
+tabs = Tabs(tabs = [tab0, tab1, tab2, tab3, tab4])
 home_layout = row(tabs)
 
 # Put the tabs in the current document for display
