@@ -11,7 +11,7 @@ from bokeh.io import show, output_notebook, push_notebook
 from bokeh.plotting import figure
 
 from bokeh.models import CategoricalColorMapper, HoverTool, ColumnDataSource, Panel, NumeralTickFormatter
-from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs
+from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs, Div
 
 from bokeh.layouts import column, row, WidgetBox
 from bokeh.palettes import Category20_20
@@ -24,6 +24,9 @@ from bokeh.plotting import figure, curdoc
 from .helper import getKColors
 
 def most_reviewed_categories_tab(dataset, metadata):
+
+    heading_div = Div(text="""<br><h3 style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0.5rem; font-family: &quot;Nunito Sans&quot;, -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-weight: 600; color: rgb(26, 26, 26); font-size: 2rem; text-transform: uppercase; letter-spacing: 3px;">Top k Categories</h3><pre>Slide to select k.</pre><hr>""",
+        width=1000, height=120, style={'text-align': 'center'})
 
     combined_data = dataset.set_index('asin').join(metadata.set_index('Product ID'))
 
@@ -68,7 +71,7 @@ def most_reviewed_categories_tab(dataset, metadata):
 
     top_k_select_slider = Slider(start = 1, end = category_count,
                                  step = 5, value = default,
-                                 title = 'Top k Categories')
+                                 title = 'Top k Categories', bar_color="red")
 
     def update_plot(attr, old, new):
 
@@ -89,6 +92,6 @@ def most_reviewed_categories_tab(dataset, metadata):
 
     top_k_select_slider.on_change('value', update_plot)
 
-    layout = column(top_k_select_slider, p)
+    layout = column(heading_div, top_k_select_slider, p)
     tab = Panel(child=layout, title='Most Reviewed Categories')
     return tab

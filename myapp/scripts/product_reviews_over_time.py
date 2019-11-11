@@ -23,6 +23,11 @@ from .helper import getKColors
 
 
 def product_reviews_over_time_tab(dataset, metadata):
+
+    heading_div = Div(
+        text="""<br><h3 style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0.5rem; font-family: &quot;Nunito Sans&quot;, -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-weight: 600; color: rgb(26, 26, 26); font-size: 2rem; text-transform: uppercase; letter-spacing: 3px;">Product Review Timeline</h3><pre>Search a product & visualize its Yearly, Monthly, & Daily review trends. Checkout "Product Reviews Timeline - WITH SLIDER (WIP)" tab for the eventual stage of this vis.</pre><hr>""",
+        width=1000, height=120, style={'text-align': 'center'})
+
     combined_data = dataset.set_index('asin').join(metadata.set_index('Product ID')).reset_index()
     combined_data.columns = ['asin', 'reviewerID', 'overall', 'unixReviewTime', 'Description', 'price', 'Category']
     combined_data['asin'] = combined_data['asin'].astype(str)
@@ -372,7 +377,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     sample_product_ids = Div(text=pre_text_data, width=600, height=100)
 
     # layout = column(search_input, search_button, product_details_div, radio_button_group, p1, p2)
-    layout = column(row(column(search_input, search_button, sample_product_ids), product_details_div),
+    layout = column(heading_div, row(column(search_input, search_button, sample_product_ids), product_details_div),
                     radio_button_group, p1, p2)
     tab = Panel(child=layout, title='Product Reviews Timeline')
     return tab
