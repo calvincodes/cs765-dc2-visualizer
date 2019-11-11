@@ -17,7 +17,7 @@ from bokeh.io import show, output_notebook, push_notebook
 from bokeh.plotting import figure
 
 from bokeh.models import CategoricalColorMapper, HoverTool, ColumnDataSource, Panel
-from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs, FileInput, Button
+from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs, FileInput, Button, DataTable, TableColumn
 
 from bokeh.layouts import column, row, WidgetBox
 from bokeh.palettes import Category20_20
@@ -37,7 +37,7 @@ from bokeh.io import show, output_notebook, push_notebook
 from bokeh.plotting import figure
 
 from bokeh.models import CategoricalColorMapper, HoverTool, ColumnDataSource, Panel, NumeralTickFormatter
-from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs
+from bokeh.models.widgets import CheckboxGroup, Slider, RangeSlider, Tabs, Div
 
 from bokeh.layouts import column, row, WidgetBox
 from bokeh.palettes import Category20_20
@@ -76,40 +76,87 @@ def upload_metadata(attr, old, new):
 metadata_file_input = FileInput(accept=".csv")
 metadata_file_input.on_change('value', upload_metadata)
 
-def refresh_with_new_data():
-    global tab0, tab2, home_layout
+current_dataset = "CD & Vinyl Data"
+
+current_dataset_div = Div(text="<h2>\""+current_dataset+"\" Loaded!</h2>", width=1000, height=50, style={'text-align':'center'})
+
+def get_data_analytics():
+    combined_data = dataset.set_index('asin').join(metadata.set_index('Product ID')).reset_index()
+    combined_data.columns = ['asin', 'reviewerID', 'overall', 'unixReviewTime', 'Description', 'price', 'Category']
+
+    unique_products = combined_data['asin'].nunique()
+    unique_category = combined_data['Category'].nunique()
+    total_reviews = len(combined_data)
+    unique_reviewers = combined_data['reviewerID'].nunique()
+
+    data_analytics = dict(
+        attr=['Total Products', 'Total Categories', 'Total Reviews', 'Unique Reviewers'],
+        vals=[unique_products, unique_category, total_reviews, unique_reviewers]
+    )
+    return data_analytics
+
+
+analytics_source = ColumnDataSource(get_data_analytics())
+
+analytics_columns = [
+    TableColumn(field="attr", title="Attributes"),
+    TableColumn(field="vals", title="Values"),
+]
+analytics_table = DataTable(source=analytics_source, columns=analytics_columns, width=1000, height=280)
+
+def refresh_with_new_data(dataset_enum):
+    global tab0, tab2, home_layout, current_dataset
+
+    if dataset_enum == 1:
+        current_dataset = "CD & Vinyl Data"
+    if dataset_enum == 2:
+        current_dataset = "Music & Instrument Data"
+    if dataset_enum == 3:
+        current_dataset = "User Provided Data"
+
+    analytics_source.data = get_data_analytics()
+
     updated_tab1 = product_reviews_over_time_tab(dataset, metadata)
     updated_tab3 = most_reviewed_categories_tab(dataset, metadata)
     updated_tab4 = category_wise_reviews_tab(dataset, metadata)
     updated_tabs = Tabs(tabs=[tab0, updated_tab1, tab2, updated_tab3, updated_tab4])
+    current_dataset_div.text = "<h2>\""+current_dataset+"\" Loaded!</h2>"
     home_layout.children[0] = row(updated_tabs)
 
+def button_click_handler():
+    current_dataset_div.text = "<h2>Loading ........</h2>"
+    refresh_with_new_data(3)
+
 upload_button = Button(label="Upload Data", button_type="primary")
-upload_button.on_click(refresh_with_new_data)
+upload_button.on_click(button_click_handler)
 
 # Default Home Page
 
 def load_cd_and_vinyl_data():
+    current_dataset_div.text = "<h2>Loading ........</h2>"
     global dataset, metadata
     dataset = pd.read_csv('myapp/dataset/CDs_and_Vinyl_5.csv', skipinitialspace=True)
     metadata = pd.read_csv('myapp/dataset/CDs_And_Vinyl_meta_5.csv', skipinitialspace=True)
-    refresh_with_new_data()
+    refresh_with_new_data(1)
 
-cd_and_vinyl_data_button = Button(label="Load CD & Vinyl Data", button_type="success")
+cd_and_vinyl_data_button = Button(label="Load CD & Vinyl Data", button_type="success", width=500)
 cd_and_vinyl_data_button.on_click(load_cd_and_vinyl_data)
 
 def load_music_and_instruments_data():
+    current_dataset_div.text = "<h2>Loading ........</h2>"
     global dataset, metadata
     dataset = pd.read_csv('myapp/dataset/Musical_Instruments_5.csv', skipinitialspace=True)
     metadata = pd.read_csv('myapp/dataset/Music_Instruments_meta_5.csv', skipinitialspace=True)
-    refresh_with_new_data()
+    refresh_with_new_data(2)
 
-music_and_instruments_data_button = Button(label="Load Music & Instruments Data", button_type="success")
+music_and_instruments_data_button = Button(label="Load Music & Instruments Data", button_type="success", width=500)
 music_and_instruments_data_button.on_click(load_music_and_instruments_data)
 
 tab0_layout = column(
     dataset_file_input, metadata_file_input, upload_button,
-    row(cd_and_vinyl_data_button, music_and_instruments_data_button))
+    row(cd_and_vinyl_data_button, music_and_instruments_data_button),
+    current_dataset_div,
+    analytics_table)
 tab0 = Panel(child=tab0_layout, title='Datasource Selector')
 
 # Create each of the tabs
