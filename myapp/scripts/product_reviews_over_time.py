@@ -82,7 +82,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     # Total Reviews Figure
     p1 = figure(x_range=plot_data.time.tolist(), plot_width=1200, plot_height=300)
     r1_l = p1.line(source=source, x='time_stamp', y='total', line_width=2)
-    r1_c = p1.circle(source=source, x='time_stamp', y='total', size=20, color="navy", alpha=0.5)
+    r1_c = p1.circle(source=source, x='time_stamp', y='total', size=15, color="red", alpha=0.5)
 
     p1.add_tools(hover)
 
@@ -103,7 +103,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     # Average Review Figure
     p2 = figure(x_range=plot_data.time.tolist(), plot_width=1200, plot_height=300)
     r2_l = p2.line(source=source, x='time_stamp', y='average', line_width=2)
-    r2_c = p2.circle(source=source, x='time_stamp', y='average', size=20, color="navy", alpha=0.5)
+    r2_c = p2.circle(source=source, x='time_stamp', y='average', size=15, color="red", alpha=0.5)
 
     p2.add_tools(hover)
 
@@ -150,7 +150,10 @@ def product_reviews_over_time_tab(dataset, metadata):
 
         global year_wise_reviews, month_wise_reviews, date_wise_reviews, filtered_data, selected_product
 
-        print(selected_product)
+        try:
+            selected_product
+        except NameError:
+            selected_product = combined_data.asin.value_counts().head(1).index[0]
 
         filtered_data = get_product_data(selected_product)
 

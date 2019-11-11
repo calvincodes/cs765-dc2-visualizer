@@ -91,7 +91,7 @@ def product_reviews_over_time_with_slider_tab(dataset, metadata):
                 tools="xpan", toolbar_location=None,
                 x_axis_type="datetime")
     r1_l = p1.line(source=source, x='dt_time', y='total', line_width=2)
-    r1_c = p1.circle(source=source, x='dt_time', y='total', size=20, color="navy", alpha=0.5)
+    r1_c = p1.circle(source=source, x='dt_time', y='total', size=15, color="red", alpha=0.5)
 
     select = figure(title="Drag the middle and edges of the selection box to change the range below",
                     plot_height=150, plot_width=1200, y_range=p1.y_range,
@@ -130,7 +130,7 @@ def product_reviews_over_time_with_slider_tab(dataset, metadata):
                 x_axis_type="datetime"
                 )
     r2_l = p2.line(source=source, x='dt_time', y='average', line_width=2)
-    r2_c = p2.circle(source=source, x='dt_time', y='average', size=20, color="navy", alpha=0.5)
+    r2_c = p2.circle(source=source, x='dt_time', y='average', size=15, color="red", alpha=0.5)
 
     p2.add_tools(hover)
 
