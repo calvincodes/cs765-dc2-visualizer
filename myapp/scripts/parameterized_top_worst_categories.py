@@ -25,7 +25,7 @@ from .helper import getKColors
 
 def parameterized_top_worst_categories_tab(dataset, metadata):
 
-    heading_div = Div(text="""<br><h3 style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0.5rem; font-family: &quot;Nunito Sans&quot;, -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-weight: 600; color: rgb(26, 26, 26); font-size: 2rem; text-transform: uppercase; letter-spacing: 3px;">Top k Categories</h3><pre>Slide to select k.</pre><hr>""",
+    heading_div = Div(text="""<br><h3 style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0.5rem; font-family: &quot;Nunito Sans&quot;, -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-weight: 600; color: rgb(26, 26, 26); font-size: 2rem; text-transform: uppercase; letter-spacing: 3px;">Top and Worst Performing Categories</h3><pre>Feed in the average rating and total review parameters to perform a focused search.</pre><hr>""",
         width=1000, height=120, style={'text-align': 'center'})
 
     combined_data = dataset.set_index('asin').join(metadata.set_index('Product ID'))
