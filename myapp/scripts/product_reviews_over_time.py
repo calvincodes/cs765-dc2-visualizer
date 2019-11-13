@@ -45,6 +45,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     # Default selected_product is the most_purchased_product
     selected_product = combined_data.asin.value_counts().head(1).index[0]
     filtered_data = get_product_data(selected_product)
+    selected_category = filtered_data.head(1).Category.values[0]
 
     top_k = 8 if len(combined_data) > 8 else len(combined_data)
     top_k_products = combined_data.asin.value_counts().head(top_k).keys().tolist()
@@ -342,8 +343,92 @@ def product_reviews_over_time_tab(dataset, metadata):
         ds2_c.data = new_data
 
     search_input = TextInput(value=selected_product, title="Product ID:")
-    search_button = Button(label="Search", button_type="success")
+    search_button = Button(label="Search by Product Id", button_type="success")
     search_button.on_click(update_selection)
+
+    search_category_input = TextInput(value=selected_category, title="Category:")
+    search_category_button = Button(label="Search by Category", button_type="primary")
+
+    def get_div_text_for_category():
+        global selected_category
+        selected_category = search_category_input.value
+
+        category_data = combined_data[combined_data['Category'].str.lower() == str(search_category_input.value).lower()]
+        top_k_category = 8 if len(category_data) > 8 else len(category_data)
+        top_k_category_products = category_data.asin.value_counts().head(top_k_category).keys().tolist()
+        bottom_k_category_products = category_data.asin.value_counts().sort_values(ascending=True).head(top_k_category).keys().tolist()
+
+        top_k_category_pid_list = ""
+        temp_category_count = 1
+        for j in range(len(top_k_category_products)):
+            if temp_category_count % 4 == 0:
+                top_k_category_pid_list += top_k_category_products[j] + """<br>"""
+                temp_category_count = 0
+            else:
+                top_k_category_pid_list += top_k_category_products[j] + ", "
+
+            temp_category_count = temp_category_count + 1
+
+        bottom_k_category_pid_list = ""
+        temp_category_count = 1
+        for j in range(len(bottom_k_category_products)):
+            if temp_category_count % 4 == 0:
+                bottom_k_category_pid_list += bottom_k_category_products[j] + """<br>"""
+                temp_category_count = 0
+            else:
+                bottom_k_category_pid_list += bottom_k_category_products[j] + ", "
+
+            temp_category_count = temp_category_count + 1
+
+        text_data = """<font size="4"><b>Top & Worst performers for <mark><u>""" + selected_category + """</u></mark> category:</b></font> <br><br>""" + \
+                    """<font color="blue" size="3"><b>Top """ + str(top_k_category) + """ products:</b></font><br>""" + \
+                    top_k_category_pid_list + """<br>""" + \
+                    """<font color="red" size="3"><b>Bottom """ + str(top_k_category) + """ products:</b></font><br>""" + \
+                    bottom_k_category_pid_list
+        return text_data
+
+    def init_div_text_for_category():
+
+        category_data = combined_data[combined_data['Category'].str.lower() == str(search_category_input.value).lower()]
+        top_k_category = 8 if len(category_data) > 8 else len(category_data)
+        top_k_category_products = category_data.asin.value_counts().head(top_k_category).keys().tolist()
+        bottom_k_category_products = category_data.asin.value_counts().sort_values(ascending=True).head(top_k_category).keys().tolist()
+
+        top_k_category_pid_list = ""
+        temp_category_count = 1
+        for j in range(len(top_k_category_products)):
+            if temp_category_count % 4 == 0:
+                top_k_category_pid_list += top_k_category_products[j] + """<br>"""
+                temp_category_count = 0
+            else:
+                top_k_category_pid_list += top_k_category_products[j] + ", "
+
+            temp_category_count = temp_category_count + 1
+
+        bottom_k_category_pid_list = ""
+        temp_category_count = 1
+        for j in range(len(bottom_k_category_products)):
+            if temp_category_count % 4 == 0:
+                bottom_k_category_pid_list += bottom_k_category_products[j] + """<br>"""
+                temp_category_count = 0
+            else:
+                bottom_k_category_pid_list += bottom_k_category_products[j] + ", "
+
+            temp_category_count = temp_category_count + 1
+
+        text_data = """<font size="4"><b>Top and Worst performers for <mark><u>""" + selected_category + """</u></mark> category:</b></font> <br><br>""" + \
+                    """<font color="blue" size="3"><b>Top """ + str(top_k_category) + """ products:</b></font><br>""" + \
+                    top_k_category_pid_list + """<br>""" + \
+                    """<font color="red" size="3"><b>Bottom """ + str(top_k_category) + """ products:</b></font><br>""" + \
+                    bottom_k_category_pid_list
+        return text_data
+
+    sample_pid_for_category_div = Div(text=init_div_text_for_category(), width=450, height=130)
+
+    def update_category_div():
+        sample_pid_for_category_div.text = get_div_text_for_category()
+
+    search_category_button.on_click(update_category_div)
 
     top_k_pid_list = ""
     temp_count = 1
@@ -369,15 +454,18 @@ def product_reviews_over_time_tab(dataset, metadata):
 
         temp_count = temp_count + 1
 
-    pre_text_data = """<font size="4"><b>Here are a few sample product ids from your dataset:</b></font> <br><br>""" + \
-                    """<font color="blue" size="3"><b>Top """ + str(top_k) + """ products:</b></font><br>""" + \
+    pre_text_data = """<font size="4"><b><u>Overall</u> Top & Worst performers:</b></font> <br><br>""" + \
+                    """<font color="blue" size="3"><b>Top """ + str(top_k) + """ :</b></font><br>""" + \
                     top_k_pid_list + """<br>""" + \
-                    """<font color="red" size="3"><b>Bottom """ + str(top_k) + """ products:</b></font><br>""" + \
+                    """<font color="red" size="3"><b>Bottom """ + str(top_k) + """ :</b></font><br>""" + \
                     bottom_k_pid_list
-    sample_product_ids = Div(text=pre_text_data, width=600, height=100)
+    sample_product_ids = Div(text=pre_text_data, width=450, height=130)
 
     # layout = column(search_input, search_button, product_details_div, radio_button_group, p1, p2)
-    layout = column(heading_div, row(column(search_input, search_button, sample_product_ids), product_details_div),
+    layout = column(heading_div,
+                    row(column(search_category_input, search_category_button, sample_pid_for_category_div),
+                        column(search_input, search_button, sample_product_ids),
+                        product_details_div),
                     radio_button_group, p1, p2)
     tab = Panel(child=layout, title='Product Reviews Timeline')
     return tab
