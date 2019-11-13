@@ -49,7 +49,7 @@ def most_reviewed_categories_tab(dataset, metadata):
             average=top_k_by_total_reviews_plot_data.average.tolist(),
             color=getKColors(default)))
 
-    p_top_k_by_total_reviews = figure(title="Top " + str(default) + " by Total Reviews", x_range=top_k_by_total_reviews_plot_data.Category.tolist(), plot_width=1200, plot_height=700)
+    p_top_k_by_total_reviews = figure(title="Top " + str(default) + " by Total Reviews", x_range=top_k_by_total_reviews_plot_data.Category.tolist(), plot_width=700, plot_height=400)
     r_top_k_by_total_reviews = p_top_k_by_total_reviews.vbar(source=top_k_by_total_reviews_source, x='category', width=0.4, bottom=0,
            top='total', color='color')
 
@@ -61,10 +61,10 @@ def most_reviewed_categories_tab(dataset, metadata):
     p_top_k_by_total_reviews.add_tools(hover)
 
     # Formatting axes
-    p_top_k_by_total_reviews.xaxis.axis_label = "Category"
+    p_top_k_by_total_reviews.xaxis.axis_label = ''
     p_top_k_by_total_reviews.xaxis.major_label_orientation = math.pi/2
     p_top_k_by_total_reviews.xaxis.major_label_text_font_size = "10pt"
-    p_top_k_by_total_reviews.xaxis.axis_label_text_font_size = "15pt"
+    p_top_k_by_total_reviews.xaxis.axis_label_text_font_size = "0pt"
 
     p_top_k_by_total_reviews.yaxis.axis_label = "Total Reviews"
     p_top_k_by_total_reviews.yaxis.formatter=NumeralTickFormatter(format="0")
@@ -81,73 +81,9 @@ def most_reviewed_categories_tab(dataset, metadata):
             average=bottom_k_by_total_reviews_plot_data.average.tolist(),
             color=getKColors(default)))
 
-    p_bottom_k_by_total_reviews = figure(title="Worst " + str(default) + " by Total Reviews", x_range=bottom_k_by_total_reviews_plot_data.Category.tolist(), plot_width=1200, plot_height=700)
+    p_bottom_k_by_total_reviews = figure(title="Worst " + str(default) + " by Total Reviews", x_range=bottom_k_by_total_reviews_plot_data.Category.tolist(), plot_width=700, plot_height=400)
     r_bottom_k_by_total_reviews = p_bottom_k_by_total_reviews.vbar(source=bottom_k_by_total_reviews_plot_source, x='category', width=0.4, bottom=0,
                            top='total', color='color')
-    p_bottom_k_by_total_reviews.add_tools(hover)
-
-    # Formatting axes
-    p_bottom_k_by_total_reviews.xaxis.axis_label = "Category"
-    p_bottom_k_by_total_reviews.xaxis.major_label_orientation = math.pi / 2
-    p_bottom_k_by_total_reviews.xaxis.major_label_text_font_size = "10pt"
-    p_bottom_k_by_total_reviews.xaxis.axis_label_text_font_size = "15pt"
-
-    p_bottom_k_by_total_reviews.yaxis.axis_label = "Total Reviews"
-    p_bottom_k_by_total_reviews.yaxis.formatter = NumeralTickFormatter(format="0")
-    p_bottom_k_by_total_reviews.yaxis.major_label_text_font_size = "10pt"
-    p_bottom_k_by_total_reviews.yaxis.axis_label_text_font_size = "15pt"
-
-    ds_bottom_k_by_total_reviews = r_bottom_k_by_total_reviews.data_source
-
-    top_k_by_total_reviews_plot_data = top_category_by_total_reviews.head(default)
-    top_k_by_total_reviews_source = ColumnDataSource(
-        data=dict(
-            category=top_k_by_total_reviews_plot_data.Category.tolist(),
-            total=top_k_by_total_reviews_plot_data.total.tolist(),
-            average=top_k_by_total_reviews_plot_data.average.tolist(),
-            color=getKColors(default)))
-
-    p_top_k_by_total_reviews = figure(title="Top " + str(default) + " by Total Reviews",
-                                      x_range=top_k_by_total_reviews_plot_data.Category.tolist(), plot_width=1200,
-                                      plot_height=700)
-    r_top_k_by_total_reviews = p_top_k_by_total_reviews.vbar(source=top_k_by_total_reviews_source, x='category',
-                                                             width=0.4, bottom=0,
-                                                             top='total', color='color')
-
-    # Adding hover tool
-    hover = HoverTool(tooltips=[('Category', '@category'),
-                                ('Avg Review', '@average'),
-                                ('Total Reviews', '@total')],
-                      mode='vline')
-    p_top_k_by_total_reviews.add_tools(hover)
-
-    # Formatting axes
-    p_top_k_by_total_reviews.xaxis.axis_label = "Category"
-    p_top_k_by_total_reviews.xaxis.major_label_orientation = math.pi / 2
-    p_top_k_by_total_reviews.xaxis.major_label_text_font_size = "10pt"
-    p_top_k_by_total_reviews.xaxis.axis_label_text_font_size = "15pt"
-
-    p_top_k_by_total_reviews.yaxis.axis_label = "Total Reviews"
-    p_top_k_by_total_reviews.yaxis.formatter = NumeralTickFormatter(format="0")
-    p_top_k_by_total_reviews.yaxis.major_label_text_font_size = "10pt"
-    p_top_k_by_total_reviews.yaxis.axis_label_text_font_size = "15pt"
-
-    ds_top_k_by_total_reviews = r_top_k_by_total_reviews.data_source
-
-    bottom_k_by_total_reviews_plot_data = bottom_category_by_total_reviews.head(default)
-    bottom_k_by_total_reviews_plot_source = ColumnDataSource(
-        data=dict(
-            category=bottom_k_by_total_reviews_plot_data.Category.tolist(),
-            total=bottom_k_by_total_reviews_plot_data.total.tolist(),
-            average=bottom_k_by_total_reviews_plot_data.average.tolist(),
-            color=getKColors(default)))
-
-    p_bottom_k_by_total_reviews = figure(title="Worst " + str(default) + " by Total Reviews",
-                                         x_range=bottom_k_by_total_reviews_plot_data.Category.tolist(), plot_width=1200,
-                                         plot_height=700)
-    r_bottom_k_by_total_reviews = p_bottom_k_by_total_reviews.vbar(source=bottom_k_by_total_reviews_plot_source,
-                                                                   x='category', width=0.4, bottom=0,
-                                                                   top='total', color='color')
     p_bottom_k_by_total_reviews.add_tools(hover)
 
     # Formatting axes
@@ -172,8 +108,8 @@ def most_reviewed_categories_tab(dataset, metadata):
             color=getKColors(default)))
 
     p_top_k_by_avg_reviews = figure(title="Top " + str(default) + " by Avg Rating",
-                                    x_range=top_k_by_avg_reviews_plot_data.Category.tolist(), plot_width=1200,
-                                    plot_height=700)
+                                    x_range=top_k_by_avg_reviews_plot_data.Category.tolist(), plot_width=700,
+                                    plot_height=400)
     r_top_k_by_avg_reviews = p_top_k_by_avg_reviews.vbar(source=top_k_by_avg_reviews_source, x='category', width=0.4,
                                                          bottom=0,
                                                          top='average', color='color')
@@ -186,10 +122,10 @@ def most_reviewed_categories_tab(dataset, metadata):
     p_top_k_by_avg_reviews.add_tools(hover)
 
     # Formatting axes
-    p_top_k_by_avg_reviews.xaxis.axis_label = "Category"
+    p_top_k_by_avg_reviews.xaxis.axis_label = ""
     p_top_k_by_avg_reviews.xaxis.major_label_orientation = math.pi / 2
     p_top_k_by_avg_reviews.xaxis.major_label_text_font_size = "10pt"
-    p_top_k_by_avg_reviews.xaxis.axis_label_text_font_size = "15pt"
+    p_top_k_by_avg_reviews.xaxis.axis_label_text_font_size = "0pt"
 
     p_top_k_by_avg_reviews.yaxis.axis_label = "Avg Rating"
     p_top_k_by_avg_reviews.yaxis.formatter = NumeralTickFormatter(format="0")
@@ -207,8 +143,8 @@ def most_reviewed_categories_tab(dataset, metadata):
             color=getKColors(default)))
 
     p_bottom_k_by_avg_reviews = figure(title="Worst " + str(default) + " by Avg Rating",
-                                       x_range=bottom_k_by_avg_reviews_plot_data.Category.tolist(), plot_width=1200,
-                                       plot_height=700)
+                                       x_range=bottom_k_by_avg_reviews_plot_data.Category.tolist(), plot_width=700,
+                                       plot_height=400)
     r_bottom_k_by_avg_reviews = p_bottom_k_by_avg_reviews.vbar(source=bottom_k_by_avg_reviews_plot_source, x='category',
                                                                width=0.4, bottom=0,
                                                                top='average', color='color')
@@ -281,6 +217,8 @@ def most_reviewed_categories_tab(dataset, metadata):
 
     k_select_slider.on_change('value', update_plot)
 
-    layout = column(heading_div, k_select_slider, p_top_k_by_total_reviews, p_bottom_k_by_total_reviews, p_top_k_by_avg_reviews, p_bottom_k_by_avg_reviews)
+    layout = column(heading_div, k_select_slider,
+                    row(p_top_k_by_total_reviews, p_top_k_by_avg_reviews),
+                    row(p_bottom_k_by_total_reviews, p_bottom_k_by_avg_reviews))
     tab = Panel(child=layout, title='Category Wise Performance')
     return tab
