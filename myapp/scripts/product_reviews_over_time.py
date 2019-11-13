@@ -279,6 +279,9 @@ def product_reviews_over_time_tab(dataset, metadata):
 
     def update_selection():
 
+        if not search_input.value:
+            return
+
         global year_wise_reviews, month_wise_reviews, date_wise_reviews, product_details, filtered_data, selected_product
         selected_product = search_input.value
         searched_data = get_product_data(search_input.value)
@@ -351,6 +354,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     search_category_button = Button(label="Search by Category", button_type="primary")
 
     def get_div_text_for_category():
+
         global selected_category
         selected_category = search_category_input.value
 
@@ -432,6 +436,8 @@ def product_reviews_over_time_tab(dataset, metadata):
     sample_pid_for_category_div = Div(text=init_div_text_for_category(), width=450, height=130)
 
     def update_category_div():
+        if not search_category_input.value:
+            return
         sample_pid_for_category_div.text = get_div_text_for_category()
 
     search_category_button.on_click(update_category_div)
