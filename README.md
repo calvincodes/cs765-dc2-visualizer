@@ -1,4 +1,15 @@
-https://cs765-dc2-visualizer.herokuapp.com/myapp
+# DESIGN CHALLENGE 2 | CS765 - Data Visualization
+
+This application lets sellers visualize the customer review data of 
+their products. Sellers can identify the best and worst performing 
+categories, best and worst performing products in each category, and 
+how are these products doing over time to find trends and patterns.
+
+The application is hosted on Heroku: https://cs765-dc2-visualizer.herokuapp.com/myapp
+
+Note: This uses an unpaid account and thus the load time of the 
+application is approximately 30 seconds. Please don't give up as the
+page loads.
 
 TODO
 1. Display msg upon successful load of data
