@@ -45,7 +45,7 @@ def product_reviews_over_time_tab(dataset, metadata):
     top_k = 8 if len(combined_data) > 8 else len(combined_data)
 
     # Default selected_product is the most_purchased_product
-    selected_product = combined_data.asin.value_counts().head(top_k).index[0]
+    selected_product = combined_data.asin.value_counts().keys()[top_k-1]
     filtered_data = get_product_data(selected_product)
     selected_category = filtered_data.head(1).Category.values[0]
 
