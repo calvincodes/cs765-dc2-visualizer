@@ -282,5 +282,5 @@ def most_reviewed_categories_tab(dataset, metadata):
     k_select_slider.on_change('value', update_plot)
 
     layout = column(heading_div, k_select_slider, p_top_k_by_total_reviews, p_bottom_k_by_total_reviews, p_top_k_by_avg_reviews, p_bottom_k_by_avg_reviews)
-    tab = Panel(child=layout, title='Most Reviewed Categories')
+    tab = Panel(child=layout, title='Category Wise Performance')
     return tab
