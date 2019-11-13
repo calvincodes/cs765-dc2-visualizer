@@ -5,22 +5,38 @@ their products. Sellers can identify the best and worst performing
 categories, best and worst performing products in each category, and 
 how are these products doing over time to find trends and patterns.
 
-The application is hosted on Heroku: https://cs765-dc2-visualizer.herokuapp.com/myapp
+## [Web Application](https://cs765-dc2-visualizer.herokuapp.com/myapp)
+
+Hosted on Heroku: https://cs765-dc2-visualizer.herokuapp.com/myapp
 
 Note: This uses an unpaid account and thus the load time of the 
-application is approximately 30 seconds. Please don't give up as the
+application is **approximately 30 seconds**. Please don't give up as the
 page loads.
 
-TODO
-1. Display msg upon successful load of data
-2. Add some html to tell how to navigate
-3. Search using text and provide results accordingly
-5. Provide some sample analysis of data after upload. This may include mode of product, category, total products, etc. combined_data.asin.value_counts()
-6. Mention in slider tab that it is static
-7. Add link to sample data which can be downloaded and worked on.
-8. Use default as worst performer in case of product review timeline.
-9. Add more outlier. Top performing, worst performing. Most reviewers, least reviewers, etc.
+## Local Setup
 
-`bokeh serve --show myapp/`
+### Prerequisites
 
-https://samirak93.github.io/analytics/Deploy-bokeh-server-plots-using-heroku.html
+`pip install -r requirements.txt`
+
+```
+bokeh==1.4.0
+Jinja2>=2.10.1
+MarkupSafe==1.0
+numpy==1.14.2
+pandas==0.19.2
+PyYAML>=4.2b1
+requests==2.20.0
+scikit-learn==0.19.1
+scipy==1.0.1
+tornado==5.0.1
+```
+### Running Locally
+
+1. Clone the repository. `git clone https://github.com/calvincodes/cs765-dc2-visualizer.git`
+2. Change directory to the cloned repository. `cd cs765-dc2-visualizer`
+3. Install requirements if not already installed.
+4. Run bokeh server. `bokeh serve --show myapp/`
+
+## References
+1. [Deploy Bokeh Server Plots Using Heroku](https://samirak93.github.io/analytics/Deploy-bokeh-server-plots-using-heroku.html)
