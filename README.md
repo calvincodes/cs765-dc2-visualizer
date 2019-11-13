@@ -5,7 +5,7 @@ their products. Sellers can identify the best and worst performing
 categories, best and worst performing products in each category, and 
 how are these products doing over time to find trends and patterns.
 
-## [Web Application](https://cs765-dc2-visualizer.herokuapp.com/myapp)
+## Web Application
 
 Hosted on Heroku: https://cs765-dc2-visualizer.herokuapp.com/myapp
 
