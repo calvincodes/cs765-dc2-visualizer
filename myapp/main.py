@@ -56,7 +56,7 @@ import base64
 import io
 
 heading_div = Div(text="""<br><h1 style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0.5rem; font-family: &quot;Nunito Sans&quot;, -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-weight: 600; color: rgb(26, 26, 26); font-size: 2rem; text-transform: uppercase; letter-spacing: 3px;">DESIGN CHALLENGE 2</h1><pre>Analyze Product Trends. Use sample data or upload custom files. Navigate through tabs for different visualizations.</pre><hr>""", width=1000, height=120, style={'text-align':'center'})
-footer_div = Div(text="""<br><p style="font-style: italic; font-color:black;"><a href="https://github.com/calvincodes/cs765-dc2-visualizer">Github Link</a></p>""", width=1000, height=20, style={'text-align':'center'})
+footer_div = Div(text="""<font color="black" size="3"><a href="https://github.com/calvincodes/cs765-dc2-visualizer" target="_blank">Github Link</a></font>""", width=1000, height=20, style={'text-align':'center'})
 
 dataset = pd.read_csv('myapp/dataset/Musical_Instruments_5.csv', skipinitialspace=True)
 dataset.columns = ['asin', 'reviewerID', 'overall', 'unixReviewTime']
@@ -157,9 +157,12 @@ def load_music_and_instruments_data():
 music_and_instruments_data_button = Button(label="Load Music & Instruments Data", button_type="success", width=500)
 music_and_instruments_data_button.on_click(load_music_and_instruments_data)
 
+sample_data_div = Div(text="""<font color="black"><a href="https://github.com/calvincodes/cs765-dc2-visualizer/tree/master/myapp/dataset/synthetic%20data%20sets" target="_blank"><b>Click here</b></a> for input file format details and sample input files.</font>""", width=1000, height=20, style={'text-align':'center'})
+
 tab0_layout = column(heading_div,
     row(pre_dataset, dataset_file_input),
     row(pre_metadata, metadata_file_input),
+    sample_data_div,
     upload_button,
     row(cd_and_vinyl_data_button, music_and_instruments_data_button),
     current_dataset_div,
