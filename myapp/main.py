@@ -110,7 +110,7 @@ analytics_columns = [
 analytics_table = DataTable(source=analytics_source, columns=analytics_columns, width=1000, height=150)
 
 def refresh_with_new_data(dataset_enum):
-    global tab0, tab2, home_layout, current_dataset
+    global tab0, tab3, home_layout, current_dataset
 
     if dataset_enum == 1:
         current_dataset = "CD & Vinyl Data"
@@ -122,9 +122,9 @@ def refresh_with_new_data(dataset_enum):
     analytics_source.data = get_data_analytics()
 
     updated_tab1 = product_reviews_over_time_tab(dataset, metadata)
-    updated_tab3 = most_reviewed_categories_tab(dataset, metadata)
-    updated_tab4 = category_wise_reviews_tab(dataset, metadata)
-    updated_tabs = Tabs(tabs=[tab0, updated_tab1, tab2, updated_tab3, updated_tab4])
+    updated_tab2 = most_reviewed_categories_tab(dataset, metadata)
+    # updated_tab4 = category_wise_reviews_tab(dataset, metadata)
+    updated_tabs = Tabs(tabs=[tab0, updated_tab1, updated_tab2, tab3])
     current_dataset_div.text = "<h2><mark>\""+current_dataset+"\"</mark> Loaded!</h2>"
     home_layout.children[0] = row(updated_tabs)
 
@@ -169,12 +169,12 @@ tab0 = Panel(child=tab0_layout, title='Datasource Selector')
 
 # Create each of the tabs
 tab1 = product_reviews_over_time_tab(dataset, metadata)
-tab2 = product_reviews_over_time_with_slider_tab(dataset, metadata)
-tab3 = most_reviewed_categories_tab(dataset, metadata)
-tab4 = category_wise_reviews_tab(dataset, metadata)
+tab2 = most_reviewed_categories_tab(dataset, metadata)
+tab3 = product_reviews_over_time_with_slider_tab(dataset, metadata)
+# tab4 = category_wise_reviews_tab(dataset, metadata)
 
 # Put all the tabs into one application
-tabs = Tabs(tabs = [tab0, tab1, tab2, tab3, tab4])
+tabs = Tabs(tabs = [tab0, tab1, tab2, tab3])
 home_layout = row(tabs)
 
 # Put the tabs in the current document for display
