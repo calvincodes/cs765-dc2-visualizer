@@ -83,7 +83,7 @@ metadata_file_input.on_change('value', upload_metadata)
 
 current_dataset = "Music & Instrument Data"
 
-current_dataset_div = Div(text="<h2>\""+current_dataset+"\" Loaded!</h2>", width=1000, height=50, style={'text-align':'center'})
+current_dataset_div = Div(text="<h2><mark>\""+current_dataset+"\"</mark> Loaded!</h2>", width=1000, height=50, style={'text-align':'center'})
 
 def get_data_analytics():
     combined_data = dataset.set_index('asin').join(metadata.set_index('Product ID')).reset_index()
@@ -125,7 +125,7 @@ def refresh_with_new_data(dataset_enum):
     updated_tab3 = most_reviewed_categories_tab(dataset, metadata)
     updated_tab4 = category_wise_reviews_tab(dataset, metadata)
     updated_tabs = Tabs(tabs=[tab0, updated_tab1, tab2, updated_tab3, updated_tab4])
-    current_dataset_div.text = "<h2>\""+current_dataset+"\" Loaded!</h2>"
+    current_dataset_div.text = "<h2><mark>\""+current_dataset+"\"</mark> Loaded!</h2>"
     home_layout.children[0] = row(updated_tabs)
 
 def button_click_handler():
