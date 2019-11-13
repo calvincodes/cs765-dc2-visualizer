@@ -58,9 +58,9 @@ import io
 heading_div = Div(text="""<br><h1 style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0.5rem; font-family: &quot;Nunito Sans&quot;, -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-weight: 600; color: rgb(26, 26, 26); font-size: 2rem; text-transform: uppercase; letter-spacing: 3px;">DESIGN CHALLENGE 2</h1><pre>Analyze Product Trends. Use sample data or upload custom files. Navigate through tabs for different visualizations.</pre><hr>""", width=1000, height=120, style={'text-align':'center'})
 footer_div = Div(text="""<br><p style="font-style: italic; font-color:black;"><a href="https://github.com/calvincodes/cs765-dc2-visualizer">Github Link</a></p>""", width=1000, height=20, style={'text-align':'center'})
 
-dataset = pd.read_csv('myapp/dataset/CDs_and_Vinyl_5.csv', skipinitialspace=True)
+dataset = pd.read_csv('myapp/dataset/Musical_Instruments_5.csv', skipinitialspace=True)
 dataset.columns = ['asin', 'reviewerID', 'overall', 'unixReviewTime']
-metadata = pd.read_csv('myapp/dataset/CDs_And_Vinyl_meta_5.csv', skipinitialspace=True)
+metadata = pd.read_csv('myapp/dataset/Music_Instruments_meta_5.csv', skipinitialspace=True)
 metadata.columns = ['Product ID', 'Description', 'price', 'Category']
 
 def upload_dataset(attr, old, new):
@@ -81,7 +81,7 @@ pre_metadata = PreText(text="""Metadata CSV File""",width=150, height=10)
 metadata_file_input = FileInput(accept=".csv")
 metadata_file_input.on_change('value', upload_metadata)
 
-current_dataset = "CD & Vinyl Data"
+current_dataset = "Music & Instrument Data"
 
 current_dataset_div = Div(text="<h2>\""+current_dataset+"\" Loaded!</h2>", width=1000, height=50, style={'text-align':'center'})
 
