@@ -42,12 +42,13 @@ def product_reviews_over_time_tab(dataset, metadata):
         product_data = product_data.sort_values('dtReviewTime')
         return product_data
 
+    top_k = 8 if len(combined_data) > 8 else len(combined_data)
+
     # Default selected_product is the most_purchased_product
-    selected_product = combined_data.asin.value_counts().head(1).index[0]
+    selected_product = combined_data.asin.value_counts().keys()[top_k-1]
     filtered_data = get_product_data(selected_product)
     selected_category = filtered_data.head(1).Category.values[0]
 
-    top_k = 8 if len(combined_data) > 8 else len(combined_data)
     top_k_products = combined_data.asin.value_counts().head(top_k).keys().tolist()
     bottom_k_products = combined_data.asin.value_counts().sort_values(ascending=True).head(top_k).keys().tolist()
 
@@ -354,6 +355,11 @@ def product_reviews_over_time_tab(dataset, metadata):
         selected_category = search_category_input.value
 
         category_data = combined_data[combined_data['Category'].str.lower() == str(search_category_input.value).lower()]
+
+        if category_data.empty:
+
+            return """<font size="4"><b>Sorry! No products found for <mark><u>\"""" + selected_category + """\"</u></mark> category.</b></font> <br><br>"""
+
         top_k_category = 8 if len(category_data) > 8 else len(category_data)
         top_k_category_products = category_data.asin.value_counts().head(top_k_category).keys().tolist()
         bottom_k_category_products = category_data.asin.value_counts().sort_values(ascending=True).head(top_k_category).keys().tolist()
@@ -380,7 +386,7 @@ def product_reviews_over_time_tab(dataset, metadata):
 
             temp_category_count = temp_category_count + 1
 
-        text_data = """<font size="4"><b>Top & Worst performers for <mark><u>""" + selected_category + """</u></mark> category:</b></font> <br><br>""" + \
+        text_data = """<font size="4"><b>Top & Worst performers for <mark><u>\"""" + selected_category + """\"</u></mark> category:</b></font> <br><br>""" + \
                     """<font color="blue" size="3"><b>Top """ + str(top_k_category) + """ products:</b></font><br>""" + \
                     top_k_category_pid_list + """<br>""" + \
                     """<font color="red" size="3"><b>Bottom """ + str(top_k_category) + """ products:</b></font><br>""" + \
@@ -416,7 +422,7 @@ def product_reviews_over_time_tab(dataset, metadata):
 
             temp_category_count = temp_category_count + 1
 
-        text_data = """<font size="4"><b>Top and Worst performers for <mark><u>""" + selected_category + """</u></mark> category:</b></font> <br><br>""" + \
+        text_data = """<font size="4"><b>Top and Worst performers for <mark><u>\"""" + selected_category + """\"</u></mark> category:</b></font> <br><br>""" + \
                     """<font color="blue" size="3"><b>Top """ + str(top_k_category) + """ products:</b></font><br>""" + \
                     top_k_category_pid_list + """<br>""" + \
                     """<font color="red" size="3"><b>Bottom """ + str(top_k_category) + """ products:</b></font><br>""" + \
