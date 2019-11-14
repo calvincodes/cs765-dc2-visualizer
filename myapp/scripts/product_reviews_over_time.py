@@ -94,10 +94,10 @@ def product_reviews_over_time_tab(dataset, metadata):
     p1.add_tools(hover)
 
     # Formatting axes
-    p1.xaxis.axis_label = "Time"
+    p1.xaxis.axis_label = ""
     p1.xaxis.major_label_orientation = math.pi / 2
     p1.xaxis.major_label_text_font_size = "10pt"
-    p1.xaxis.axis_label_text_font_size = "15pt"
+    p1.xaxis.axis_label_text_font_size = "0pt"
 
     p1.yaxis.axis_label = "Total Reviews"
     p1.yaxis.formatter = NumeralTickFormatter(format="0")
